@@ -20,6 +20,33 @@
 !*.bd
 !*.edif
 #########
+#Scala and makefile
+#########
+!*.Scala
+!Makefile
+
+#########
+# git ignore from risc-v-lab-master - May remove later
+#########
+/.sbt
+/.bsp
+/.vscode
+/.metals
+/.bloop
+/.cache
+/.idea
+/project
+/target
+/test_run_dir
+/generated
+/build
+/quartus
+!/quartus/*.qsf
+!/quartus/*.qpf
+*.out
+*.bin
+
+#########
 #IP files
 #########
 #.xci: synthesis and implemented not possible - you need to return back to the previous version to generate output products
