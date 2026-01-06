@@ -11,9 +11,7 @@ class IF extends Module {
 
     val pcPlusFour=Output(UInt(32.W))
     val Instruction=Output(UInt(32.W))//idk if this one is actually supposed to be 32 bits. 
-
-
-
+    
 
   })
 

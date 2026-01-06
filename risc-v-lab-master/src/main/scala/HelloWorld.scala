@@ -15,6 +15,8 @@ object HelloWorld extends App {
  * @param freq The frequency of the clock
  * @param baud The baud rate of the UART
  * */
+
+ 
 class HelloWorld(freq: Int, baud: Int) extends Module {
   val io = IO(new Bundle {
     val uart = UartPins()
