@@ -22,7 +22,7 @@ class ID extends Module {
     instruction_reg:=io.instruction
 
     val PCIN_reg=RegInit(UInt(32.W))
-    PCIN_reg:=io.PCIN
-    io.PCOUT:=io.PCIn_reg
+    PCIN_reg:=io.PCIn
+    io.PCOut:=PCIN_reg
 
 }

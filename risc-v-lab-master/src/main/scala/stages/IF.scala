@@ -1,7 +1,7 @@
 import chisel3._
 import chisel3.util._
 
-class EX extends Module {
+class IF extends Module {
 
   val io = IO(new Bundle {
     // Input: vector of enum values
@@ -18,11 +18,12 @@ class EX extends Module {
   })
 
   //This one needs an Instruction Memory
+
     val sum_reg=RegInit(UInt(32.W))
-    sumReg:=sum
+    sum_reg:=io.sum
 
     val PC=RegInit(UInt(32.W))
-    PC:=sum
+    PC:=io.sum
     
     io.pcPlusFour:=PC+4.U
 

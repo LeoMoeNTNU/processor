@@ -16,10 +16,6 @@ class MEM extends Module {
 
     val Sum_out=Output(UInt(32.W))
     val ReadData=Output(UInt(32.W)) 
-    val ALU_result=Output(UInt(32.W))
-
-
-
 
   })
 

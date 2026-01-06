@@ -1,7 +1,7 @@
 import chisel3._
 import chisel3.util._
 
-class MEM extends Module {
+class WB extends Module {
 
   val io = IO(new Bundle {
     // Input: vector of enum values
