@@ -9,11 +9,13 @@ class SecondStage extends Module {
 
     val PCIn = Input(UInt(32.W))
 
-    val Instruction=Input(UInt(32.W))
+    val IM_pointer=Input(UInt(32.W))
     
     val PCOut=Output(UInt(32.W))
     val readData1=Output(UInt(32.W))
     val readData2=Output(UInt(32.W))
+
+    val instructionOut=Output(UInt(32.W))
 
     val IR=Output(UInt(32.W))
 
@@ -23,8 +25,8 @@ class SecondStage extends Module {
     val PCIn_reg=RegInit(UInt(32.W))
     PCIn_reg:=io.PCIn
 
-    val Instruction_reg=RegInit(UInt(32.W))
-    Instruction_reg:=io.Instruction
+    val IM_pointer_reg=RegInit(UInt(32.W))
+    IM_pointer_reg:=io.IM_pointer
     
 
 }

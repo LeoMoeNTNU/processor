@@ -10,13 +10,15 @@ class FirstStage extends Module {
     val ALU_input1 = Input(UInt(32.W))
 
     val ALU_input2=Input(UInt(32.W))//idk if 32 or 64. Drawing says 64. 
+    
 
     val DataMemoryActive=Input(Bool())
     val DataMemoryReadOrWrite=Input(UInt(32.W)) 
     val DataMemoryAddress=Input(UInt(32.W))
 
     val PC=Output(UInt(32.W))
-    val IM=Output(UInt(32.W))//idk the bit width. 
+    val IM_Pointer=Output(UInt(32.W))//idk the bit width. 
+
 
 
 
