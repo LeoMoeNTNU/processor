@@ -14,5 +14,5 @@
 !/quartus/*.qsf
 !/quartus/*.qpf
 
-.out
-.bin
+*.out
+*.bin
