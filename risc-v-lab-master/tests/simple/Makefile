@@ -20,5 +20,6 @@ $(OUTDIR)/%.out: %.s
 $(OUTDIR)/%.bin: $(OUTDIR)/%.out
 	$(CC)-objcopy -O binary $< $@
 
+
 clean:
-	@rm $(OUTDIR)/*.bin $(OUTDIR)/*.out
+	@rm $(OUTDIR)/*.bin $(OUTDIR)/*.out $(OUTDIR)/*.elf

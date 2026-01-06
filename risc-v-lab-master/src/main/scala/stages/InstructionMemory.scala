@@ -10,11 +10,11 @@ class InstructionROM (memoryFile: String = "") extends Module {
     })
 
     val mem = SyncReadMem(1024, UInt(32.W))
-
+    
     if(memoryFile.trim().nonEmpty) {
         loadMemoryFromFileInline(mem, memoryFile)
     }
-
+    
     io.data := mem.read(io.address)
     //io.data(15,8) := mem.read(io.address + 1.U)
     //io.data(23,16) := mem.read(io.address + 2.U)
