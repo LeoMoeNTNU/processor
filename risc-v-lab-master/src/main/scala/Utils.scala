@@ -28,6 +28,10 @@ def funct3(x: UInt):UInt={
   x(14,12)
 }
 
+  def funct7(x: UInt):UInt={
+    x(31,25)
+  }
+
 def I_imm(x:UInt):UInt={
     x(31,20)
 }
