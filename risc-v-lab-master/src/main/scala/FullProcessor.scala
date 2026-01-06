@@ -1,3 +1,5 @@
+
+package processor
 /*
  * Blinking LED: the hardware version of Hello World
  *
@@ -32,3 +34,4 @@ object FullProcessor extends App {
   println("Hello World, I will now generate the Verilog file!")
   emitVerilog(new Hello())
 }
+
