@@ -35,13 +35,20 @@ class ALU extends Module {
   // Switch to execute correct instruction
   switch(alu_opcode) {
     is(0x33.U) { // R  types
-      switch(alu_funct3) { //
+      switch(alu_funct3) {
         is(0.U) {
           switch(alu_funct7) {
-            is(0x0.U) {
+            is(0x0.U) { // ADD
               io.alu_out := alu_rs1.asUInt + alu_rs2.asUInt
             }
           }
+        }
+      }
+    }
+    is(0x13.U) {
+      switch(alu_funct3) { //
+        is(0.U) { // ADDI
+              io.alu_out := alu_rs1.asUInt + alu_rs2.asUInt
         }
       }
     }
