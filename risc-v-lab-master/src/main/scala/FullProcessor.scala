@@ -13,8 +13,14 @@ import java.nio.file._
 
 class RVCPU(instructions: Array[Byte]) extends Module {
   val io = IO(new Bundle {
-    //val PC = Output(UInt(10.W))
-    //val instmem_out = Output(UInt(32.W))
+    val inst = Output(UInt(32.W))
+    val output = Output(UInt(32.W))
+    val rs1 = Output(UInt(32.W))
+    val rs2 = Output(UInt(32.W))
+    val funct7 = Output(UInt(7.W))
+    val funct3 = Output(UInt(3.W))
+    val alu_opcode = Output(UInt(7.W))
+    val printRF = Input(Bool())
   })
 
   val pc = RegInit(0.U(10.W))
@@ -34,7 +40,9 @@ class RVCPU(instructions: Array[Byte]) extends Module {
 
   // Instantiate decoder.
   val decoder = Module(new Decoder())
-  decoder.io.instruction := instMem.io.data
+  val inst_reg = RegInit(0.U(32.W))
+  inst_reg :=instMem.io.data
+  decoder.io.instruction := inst_reg
  
   val rd_reg = RegInit(0.U(5.W))
   rd_reg := decoder.io.rd
@@ -49,7 +57,7 @@ class RVCPU(instructions: Array[Byte]) extends Module {
   RF.io.rs2 := decoder.io.rs2
   RF.io.write_dest := rd_reg
   RF.io.write_enable := write_enable_reg
-
+  RF.io.printRF := io.printRF
 
   val m = Wire(UInt(32.W))
   m := Mux(decoder.io.alu_src, decoder.io.imm, RF.io.rs2_val)
@@ -62,6 +70,15 @@ class RVCPU(instructions: Array[Byte]) extends Module {
   alu.io.alu_funct3 := decoder.io.funct3
   RF.io.write_data := alu.io.alu_out
 
+
+  
+  io.output := alu.io.alu_out
+  io.rs1 :=  RF.io.rs1_val
+  io.rs2 :=  Mux(decoder.io.alu_src, decoder.io.imm, RF.io.rs2_val)
+  io.alu_opcode := decoder.io.alu_op
+  io.funct7 := decoder.io.funct7 
+  io.funct3 := decoder.io.funct3
+  io.inst := inst_reg
 }
 
 /**

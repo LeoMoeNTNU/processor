@@ -20,6 +20,7 @@ class ALU extends Module {
   })
 
   // Linking registers
+  
   val alu_opcode = RegInit(0.U(7.W))
   alu_opcode := io.alu_opcode
   val alu_funct3 = RegInit(0.U(3.W))
@@ -30,9 +31,18 @@ class ALU extends Module {
   alu_rs1 := io.alu_rs1
   val alu_rs2 = RegInit(0.U(32.W))
   alu_rs2 := io.alu_rs2
-
-
+  
+  /*
+  val alu_opcode = io.alu_opcode
+  val alu_funct3 = io.alu_funct3
+  val alu_funct7 = io.alu_funct7
+  val alu_rs1 = io.alu_rs1
+  val alu_rs2 = io.alu_rs2
+  */
+  io.alu_out := 0.U
   // Switch to execute correct instruction
+
+
   switch(alu_opcode) {
     is(0x33.U) { // R  types
       switch(alu_funct3) {
