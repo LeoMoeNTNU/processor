@@ -4,89 +4,95 @@ import chisel3.util._
 
 class Decoder extends Module {
     val io = IO(new Bundle {
-        //Inputs
-        val dec_instruction = Input(UInt(32.W))
-        val dec_pc = Input(UInt(10.W))
-        val dec_rs1_data = Input(SInt(32.W))
-        val dec_rs2_data = Input(SInt(32.W))
+        //Input
+        val instruction = Input(UInt(32.W))
         //Outputs
-        val dec_rs1 = Output(UInt(5.W))
-        val dec_rs2 = Output(UInt(5.W))
-        val dec_rd = Output(UInt(5.W))
-        val dec_imm = Output(SInt(32.W))
-        val dec_alu_op = Output(UInt(4.W))
-        val dec_pc_out = Output(UInt(10.W))
-        val dec_rs1_data_out = Output(SInt(32.W))
-        val dec_rs2_data_out = Output(SInt(32.W))
-        val dec_instruction_out = Output(UInt(32.W))        
+        val rs1 = Output(UInt(5.W))
+        val rs2 = Output(UInt(5.W))
+        val rd = Output(UInt(5.W))
+        val imm = Output(UInt(32.W))
+        val alu_op = Output(UInt(4.W))
+        val reg_write = Output(Bool())
+        val mem_read = Output(Bool())
+        val mem_write = Output(Bool())
+        val alu_src = Output(Bool())       
     })
     //Extraction
-    val instruction = io.dec_instruction
-    val opcode = Utils.opcode(instruction)
-    val funct3 = Utils.funct3(instruction)
-    val funct7 = Utils.funct7(instruction)
+    val instr = io.instruction
+    val opcode = Utils.opcode(instr)
+    val funct3 = Utils.funct3(instr)
+    val funct7 = Utils.funct7(instr)
     //RegisterNumbers
-    val dec_rs1 = Utils.rs1(instruction)
-    val dec_rs2 = Utils.rs2(instruction)
-    val dec_rd = Utils.rd(instruction)
-    io.dec_rs1 := dec_rs1
-    io.dec_rs2 := dec_rs2
-    io.dec_rd := dec_rd
+    io.rs1 := Utils.rs1(instr)
+    io.rs2 := Utils.rs2(instr)
+    io.rd := Utils.rd(instr)
     //ImmediateGen AND Default
-    val imm = Wire(SInt(32.W))
-    imm := 0.S
+    val imm = Wire(UInt(32.W))
+    imm := 0.U
     //Switching
     switch(opcode) {
-    is("b0110011".U) { imm := 0.S }
-    is("b0010011".U) { imm := Utils.I_imm(instruction).asSInt }
-    is("b0000011".U) { imm := Utils.I_imm(instruction).asSInt }
-    is("b0100011".U) { imm := Utils.S_imm(instruction).asSInt }
-    is("b1100011".U) { imm := Utils.B_imm(instruction).asSInt }
-    is("b1101111".U) { imm := Utils.J_imm(instruction).asSInt }
-    is("b0110111".U) { imm := Utils.U_imm(instruction).asSInt }
-    is("b0010111".U) { imm := Utils.U_imm(instruction).asSInt }
+    is("b0110011".U) { imm := 0.U }
+    is("b0010011".U) { imm := Utils.I_imm(instr) }
+    is("b0000011".U) { imm := Utils.I_imm(instr) }
+    is("b0100011".U) { imm := Utils.S_imm(instr) }
+    is("b1100011".U) { imm := Utils.B_imm(instr) }
+    is("b1101111".U) { imm := Utils.J_imm(instr) }
+    is("b0110111".U) { imm := Utils.U_imm(instr) }
+    is("b0010111".U) { imm := Utils.U_imm(instr) }
   }
-  //ALU Operations
-   io.dec_alu_op := 0.U
+  io.imm := imm
+    // Control signals, defaults
+    io.alu_op := 0.U
+    io.reg_write := false.B
+    io.mem_read := false.B
+    io.mem_write := false.B
+    io.alu_src := false.B
     
+    //SWITCH OPCODE
     switch(opcode) {
-        is("b0110011".U) {//R-type
+        // R-type
+        is("b0110011".U) {
+            io.reg_write := true.B
+            io.alu_src := false.B
+            
             switch(funct3) {
-                is(0.U) {
-                    switch(funct7) {
-                        is(0x0.U) { io.dec_alu_op := 0.U }//ADD
-                        is(0x20.U) { io.dec_alu_op := 1.U }//SUB
-                    }
-                }
-                is(1.U) { io.dec_alu_op := 2.U }//SLL
-                is(2.U) { io.dec_alu_op := 3.U }//SLT
-                is(3.U) { io.dec_alu_op := 4.U }//SLTU
-                is(4.U) { io.dec_alu_op := 5.U }//XOR
-                is(5.U) {
-                    switch(funct7) {
-                        is(0x0.U) { io.dec_alu_op := 6.U }//SRL
-                        is(0x20.U) { io.dec_alu_op := 7.U }//SRA
-                    }
-                }
-                is(6.U) { io.dec_alu_op := 8.U }//OR
-                is(7.U) { io.dec_alu_op := 9.U }//AND
+                is(0.U) { io.alu_op := Mux(funct7(5), 1.U, 0.U) } // SUB OR ADD
+                is(1.U) { io.alu_op := 2.U }  // SLL
+                is(2.U) { io.alu_op := 3.U }  // SLT
+                is(3.U) { io.alu_op := 4.U }  // SLTU
+                is(4.U) { io.alu_op := 5.U }  // XOR
+                is(5.U) { io.alu_op := Mux(funct7(5), 7.U, 6.U) }  // SRA OR SRL
+                is(6.U) { io.alu_op := 8.U }  // OR
+                is(7.U) { io.alu_op := 9.U }  // AND
             }
         }
-        is("b0010011".U) {//I-type
-            io.dec_alu_op := 0.U//ADDI
+        
+        // I-type
+        is("b0010011".U) {
+            io.reg_write := true.B
+            io.alu_src := true.B
+            
+            switch(funct3) {
+                is(0.U) { io.alu_op := 0.U }  // ADDI
+                is(1.U) { io.alu_op := 2.U }  // SLLI
+                is(2.U) { io.alu_op := 3.U }  // SLTI
+                is(3.U) { io.alu_op := 4.U }  // SLTIU
+                is(4.U) { io.alu_op := 5.U }  // XORI
+                is(5.U) { io.alu_op := Mux(funct7(5), 7.U, 6.U) }  // SRAI or SRLI
+                is(6.U) { io.alu_op := 8.U }  // ORI
+                is(7.U) { io.alu_op := 9.U }  // ANDI
+            }
         }
-        is("b0000011".U) {//Load
-            io.dec_alu_op := 0.U//ADD, AddressCalc
+        // Load
+        is("b0000011".U) {
+            io.reg_write := true.B
+            io.alu_src := true.B
+            io.mem_read := true.B
+            io.alu_op := 0.U
         }
-        is("b0100011".U) {//Store  
-            io.dec_alu_op := 0.U//ADD, AddressCalc
+        // Store
+        is("b0100011".U) {
+            io.alu_src := true.B
+            io.mem_write := true.B
+            io.alu_op := 0.U
         }
-    }
-  //Defaults
-  io.dec_imm := imm
-  io.dec_pc_out := io.dec_pc
-  io.dec_rs1_data_out := io.dec_rs1_data
-  io.dec_rs2_data_out := io.dec_rs2_data
-  io.dec_instruction_out := instruction
-
-}
