@@ -5,12 +5,11 @@ import chisel3.util._
 class FirstStage extends Module {
 
   val io = IO(new Bundle {
-    // Input: vector of enum values
-    //The input should be: colorMoving, from To, newBoard.
 
     val ALU_input1 = Input(UInt(32.W))
 
     val ALU_input2=Input(UInt(32.W))//idk if 32 or 64. Drawing says 64. 
+    val fullInstruction=Input(UInt(32.W))
     
 
     val DataMemoryActive=Input(Bool())
@@ -27,6 +26,8 @@ class FirstStage extends Module {
   })
 
   //This one needs an Instruction Memory
+    val fullInstruction_reg=RegInit(UInt(32.W))
+    fullInstruction_reg:=io.fullInstruction_reg
 
 
     val ALU_input1_reg=RegInit(UInt(32.W))
