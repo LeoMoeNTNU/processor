@@ -15,6 +15,7 @@ class FirstStage extends Module {
     val DataMemoryActive=Input(Bool())
     val DataMemoryReadOrWrite=Input(UInt(32.W)) 
     val DataMemoryAddress=Input(UInt(32.W))
+    val DataToWrite=Input(UInt(32.W))
 
     val PC=Output(UInt(32.W))
     val IM_Pointer=Output(UInt(32.W))//idk the bit width. 
@@ -27,7 +28,7 @@ class FirstStage extends Module {
 
   //This one needs an Instruction Memory
     val fullInstruction_reg=RegInit(UInt(32.W))
-    fullInstruction_reg:=io.fullInstruction_reg
+    fullInstruction_reg:=io.fullInstruction
 
 
     val ALU_input1_reg=RegInit(UInt(32.W))
@@ -44,6 +45,9 @@ class FirstStage extends Module {
 
     val DataMemoryAddress_reg=RegInit(UInt(32.W))
     DataMemoryAddress_reg:=io.DataMemoryAddress
+
+    val DataToWrite_reg=RegInit(UInt(32.W))
+    DataToWrite_reg:=io.DataToWrite
 
 
 }

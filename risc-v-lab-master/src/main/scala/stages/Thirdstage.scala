@@ -9,8 +9,8 @@ class MEM extends Module {
     // Input: vector of enum values
     //The input should be: colorMoving, from To, newBoard.
 
-    val RF_input1=Input(UInt(32.W))//pretty sure that these dont need to be 32 bits. 
-    val RF_input2=Input(UInt(32.W))
+    val RF_input1=Input(UInt(5.W))//pretty sure that these dont need to be 32 bits. 
+    val RF_input2=Input(UInt(5.W))
 
     val fullInstructionForALU=Input(UInt(32.W))
     val fullInstructionOut=Output(UInt(32.W))
@@ -22,6 +22,7 @@ class MEM extends Module {
     val datapointer=Output(UInt(32.W))
     val dataMemoryActive=Output(Bool())
     val dataReadOrWrite=Output(Bool())//read is true and write is false. 
+    val dataToWrite=Output(UInt(32.W))
 
     //There should probably be something here to write to registers as well. 
   })
@@ -42,37 +43,50 @@ class MEM extends Module {
 
     val regs = RegInit(VecInit(Seq.fill(32)(0.U(32.W))))
 
-
-    switch(Utils.opcode(fullInstructionforALU_reg)){
+    val Instruction=Wire()
+    Instruction:=fullInstructionForALU_reg
+    switch(Utils.opcode(Instruction)){
       is("b0110011".U){//R-type
+        io.dataMemoryActive:=false.B
+        io.dataReadOrWrite:=false.B//false is for write. 
+        io.datapointer:=0.U
         io.IR:=0.U//R-type doesn't use IR.
       }
-      is("b0010011".U){
+      is("b0010011".U,"b0000011".U,"b1100111".U,"b1110011".U){//I-type
         io.IR:=Utils.I_imm(Instruction)
+
+        //sometimes, this is a write instruction and sometimes not. We probably need another switch statement inside of here. 
       }
-      is("b0000011".U){
-        io.IR:=Utils.I_imm(Instruction)
-      }
-      is("b0100011".U){
+      
+      is("b0100011".U){//S-type
         io.IR:=Utils.S_imm(Instruction)
+        io.dataMemoryActive:=true.B
+        io.dataReadOrWrite:=false.B//false is for write. 
+       
+        io.datapointer:=RF_input1_reg+Utils.S_imm(Instruction)
+        io.dataToWrite:=regs(RF_input2_reg)
+        //One problem that I haven't resolved here yet is that, depending on the specific instruction, we will write a word, halfword or byte. 
+        //idk how to fix...
+
       }
-      is("b1100011".U){
+      is("b1100011".U){//B-type
         io.IR:=Utils.B_imm(Instruction)
+        io.dataMemoryActive:=false.B
+        io.dataReadOrWrite:=false.B//false is for write. 
+        io.datapointer:=0.U
       }
-      is("b1100111".U){
-        io.IR:=Utils.I_imm(Instruction)
-      }
-      is("b1101111".U){
+  
+      is("b1101111".U){//J-type
         io.IR:=Utils.J_imm(Instruction)
+        io.dataMemoryActive:=false.B
+        io.dataReadOrWrite:=false.B//false is for write. 
+        io.datapointer:=0.U
       }
-      is("b0110111".U){
+      is("b0110111".U,"b0010111".U){//U-type
         io.IR:=Utils.U_imm(Instruction)
-      }
-      is("b0010111".U){
-        io.IR:=Utils.U_imm(Instruction)
-      }
-      is("b1110011".U){
-        io.IR:=Utils.I_imm(Instruction)
+        io.dataMemoryActive:=false.B
+        io.dataReadOrWrite:=false.B//false is for write. 
+        io.datapointer:=0.U
       }
     }
 
