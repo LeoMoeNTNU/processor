@@ -6,7 +6,7 @@ class Decoder extends Module {
     val io = IO(new Bundle {
         //Inputs
         val dec_instruction = Input(UInt(32.W))
-        val dec_pc = Input(UInt(32.W))
+        val dec_pc = Input(UInt(10.W))
         val dec_rs1_data = Input(SInt(32.W))
         val dec_rs2_data = Input(SInt(32.W))
         //Outputs
@@ -15,7 +15,7 @@ class Decoder extends Module {
         val dec_rd = Output(UInt(5.W))
         val dec_imm = Output(SInt(32.W))
         val dec_alu_op = Output(UInt(4.W))
-        val dec_pc_out = Output(UInt(32.W))
+        val dec_pc_out = Output(UInt(10.W))
         val dec_rs1_data_out = Output(SInt(32.W))
         val dec_rs2_data_out = Output(SInt(32.W))
         val dec_instruction_out = Output(UInt(32.W))        

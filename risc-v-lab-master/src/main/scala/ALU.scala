@@ -1,5 +1,4 @@
 package processor
-
 import chisel3._
 import chisel3.util._
 
@@ -14,7 +13,7 @@ class ALU extends Module {
     val alu_opcode = Input(UInt(7.W))
 
     val alu_op1 = Input(SInt(32.W)) // Operand 1
-    val alu_op2 = Input(SInt(32.W)) //Operand 2
+    val alu_op2 = Input(SInt(32.W)) // Operand 2
 
     val alu_out = Output(SInt(32.W)) // ALU output
   })

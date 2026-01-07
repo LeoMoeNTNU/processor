@@ -1,3 +1,5 @@
+package processor
+
 import chisel3._
 import chisel3.util._
 
@@ -17,5 +19,5 @@ class InstructionROM (instructions: Array[Byte]) extends Module {
 
     // Cat(MSB, ..., LSB)
     io.data := Cat(b3, b2, b1, b0)
-        
+
 }
