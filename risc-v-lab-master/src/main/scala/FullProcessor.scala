@@ -17,6 +17,8 @@ class RVCPU(instructions: Array[Byte]) extends Module {
     val instmem_out = Output(UInt(32.W))
   })
 
+  val pc = RegInit(0.U(10.W))
+  pc := pc + 4.U
   //instantiate modules for first stage.
   // Instantiate Instruction memory.
   val instMem = Module(new InstructionROM(instructions))
@@ -30,32 +32,27 @@ class RVCPU(instructions: Array[Byte]) extends Module {
   // Instantiate decoder.
   val decoder = Module(new Decoder())
   decoder.io.instruction := instMem.io.data
+ 
+  val rd_reg = RegInit(0.U(5.W))
+  rd_reg := decoder.io.rd
   
-  val pc = RegInit(0.U(10.W))
-  pc := pc + 4.U
+  val write_enable_reg = RegInit(0.U(1.W))
+  write_enable_reg = decoder.io.reg_write
+  
   
   //Second stage
   val RF = Module(new RegisterFile())
-  RF.io.rs1 := decoder.io.dec_rs1
-  RF.io.rs2 := decoder.io.dec_rs2
-  val write_dest = Input(UInt(5.W))
-  val write_enable = Input(Bool())
-  val write_data = Input(UInt(32.W))
-  val rs1_val = Output(UInt(32.W))
-  val rs2_val = Output(UInt(32.W))
-  rs1 = Wire(UInt(32.W))
-  rs2 = Wire(UInt(32.W))
+  RF.io.rs1 := instMem.io.data(19, 15)
+  RF.io.rs2 := instMem.io.data(24, 20)
+  RF.io.write_dest := rd_reg
+  RF.io.write_enable := write_enable_reg
+  RF.io.write_data := Input(UInt(32.W))
 
   // Third stage - ALU and data memory
   val alu = Module(new ALU)
   alu.io.alu_op1 := RF.io.rs1_val
-  alu.io.alu_op2 := RF.io.rs2_val
-  alu.io.alu_instruction := decoder.io.dec_instruction_out
-  alu.io.alu_funct7 := decoder.io.dec_
-  alu.io.alu_funct3 :=
-  alu.io.alu_imm :=
-  alu.io.alu_pc :=
-  alu.io.alu_opcode := 
+  alu.io.alu_op2 := Mux(decoder.io.alu_src, decoder.io.imm, RF.io.rs2_val)
+  alu.io.alu_opcode := decoder.io.alu_op
 
 }
 

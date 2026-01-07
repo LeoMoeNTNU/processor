@@ -13,8 +13,8 @@ class Decoder extends Module {
         val imm = Output(UInt(32.W))
         val alu_op = Output(UInt(4.W))
         val reg_write = Output(Bool())
-        val mem_read = Output(Bool())
-        val mem_write = Output(Bool())
+        //val mem_read = Output(Bool())
+        //val mem_write = Output(Bool())
         val alu_src = Output(Bool())       
     })
     //Extraction

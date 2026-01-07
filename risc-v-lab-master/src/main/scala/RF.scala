@@ -12,8 +12,7 @@ class RegisterFile extends Module {
         val write_enable = Input(Bool())
         val write_data = Input(UInt(32.W))
         val rs1_val = Output(UInt(32.W))
-        val rs2_val = Output(UInt(32.W))
-        
+        val rs2_val = Output(UInt(32.W))        
     })
 
     val mem = RegInit(VecInit(Seq.fill(32)(0.U(32.W))))
