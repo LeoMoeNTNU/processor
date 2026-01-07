@@ -7,17 +7,16 @@ class ALU extends Module {
     //inputs
     val alu_funct7 = Input(UInt(7.W))
     val alu_funct3 = Input(UInt(3.W))
-    val alu_imm = Input(SInt(32.W))
-    val alu_pcin = Input(UInt(32.W))
+    //val alu_pcin = Input(UInt(32.W))
     val alu_opcode = Input(UInt(7.W))
-    val rd = Input(UInt(5.W))
+    //val rd = Input(UInt(5.W))
 
 
-    val alu_rs1 = Input(SInt(32.W)) // Operand 1
-    val alu_rs2 = Input(SInt(32.W)) // Operand 2
+    val alu_rs1 = Input(UInt(32.W)) // Operand 1
+    val alu_rs2 = Input(UInt(32.W)) // Operand 2
 
-    val alu_pcout = Output(SInt(32.W)) // PC out
-    val alu_out = Output(SInt(32.W)) // ALU output
+    //val alu_pcout = Output(UInt(32.W)) // PC out
+    val alu_out = Output(UInt(32.W)) // ALU output
   })
 
   // Linking registers
@@ -40,7 +39,7 @@ class ALU extends Module {
         is(0.U) {
           switch(alu_funct7) {
             is(0x0.U) {
-              io.alu_out := alu_rs1.asSInt + alu_rs2.asSInt
+              io.alu_out := alu_rs1.asUInt + alu_rs2.asUInt
             }
           }
         }

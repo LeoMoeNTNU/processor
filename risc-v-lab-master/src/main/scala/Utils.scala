@@ -14,7 +14,7 @@ object Utils {
   def I_imm(x: UInt): UInt = Cat(Fill(20, x(31)), x(31,20))
   def S_imm(x: UInt): UInt = Cat(Fill(20, x(31)), x(31,25), x(11,7))
   def B_imm(x: UInt): UInt = Cat(Fill(19, x(31)), x(31), x(7), x(30,25), x(11,8), 0.U(1.W))
-  def U_imm(x: UInt): UInt = Cat(x(31,24), 0.U(12.W))
+  def U_imm(x: UInt): UInt = Cat(x(31,24), 0.S(12.W))
   def J_imm(x: UInt): UInt = Cat(Fill(11, x(31)), x(31), x(19,12), x(20), x(30,21), 0.U(1.W))
 }
 

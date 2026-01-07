@@ -15,8 +15,8 @@ class Decoder extends Module {
         val imm = Output(UInt(32.W))
         val alu_op = Output(UInt(4.W))
         val reg_write = Output(Bool())
-        val mem_read = Output(Bool())
-        val mem_write = Output(Bool())
+        //val mem_read = Output(Bool())
+        //val mem_write = Output(Bool())
         val alu_src = Output(Bool())
     })
     //Extraction
@@ -63,9 +63,9 @@ class Decoder extends Module {
     // Control signals, defaults
     io.alu_op := 0.U
     io.reg_write := false.B
-    io.mem_read := false.B
-    io.mem_write := false.B
-    io.alu_src := false.B
+    //io.mem_read := false.B
+    //io.mem_write := false.B
+    //io.alu_src := false.B
 
     //SWITCH OPCODE
     switch(opcode) {
@@ -83,13 +83,13 @@ class Decoder extends Module {
         is("b0000011".U) {
             io.reg_write := true.B
             io.alu_src := true.B
-            io.mem_read := true.B
+            //io.mem_read := true.B
             io.alu_op := 0.U
         }
         // Store
         is("b0100011".U) {
             io.alu_src := true.B
-            io.mem_write := true.B
+            //io.mem_write := true.B
             io.alu_op := 0.U
         }
     }
