@@ -5,7 +5,7 @@ import chisel3.util._
 
 
 
-class MEM extends Module {
+class Thirdstage extends Module {
 
   val io = IO(new Bundle {
     // Input: vector of enum values
@@ -45,7 +45,7 @@ class MEM extends Module {
 
     val regs = RegInit(VecInit(Seq.fill(32)(0.U(32.W))))
 
-    val Instruction=Wire()
+    val Instruction=Wire(UInt(32.W))
     Instruction:=fullInstructionForALU_reg
     switch(Utils.opcode(Instruction)){
       is("b0110011".U){//R-type

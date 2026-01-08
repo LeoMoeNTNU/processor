@@ -16,10 +16,33 @@ class ALU extends Module {
 
     val toReg=Input(UInt(5.W))
     
-    val output=Output(UInt(5.W))
+    val output=Output(UInt(32.W))
 
   })
 
-  val updatedRegister=RegInit()
+  val updatedRegister=RegInit(0.U(5.W))
+  val storedValue=RegInit(0.U(32.W))
+
+  val inputToALU1=Wire(UInt(32.W))
+  val inputToALU2=Wire(UInt(32.W))
+
+  when(io.from1===updatedRegister){
+    inputToALU1:=storedValue
+  }.otherwise{
+    inputToALU1:=io.val1
+  }
+
+  when(io.from2===updatedRegister){
+    inputToALU2:=storedValue
+  }.otherwise{
+    inputToALU2:=io.val2
+  }
+
+  val output_inside=inputToALU1+inputToALU2//This may cause overflow. I only want 32 bits. 
+
+  io.output:=output_inside
+  storedValue:=output_inside
+  updatedRegister:=io.toReg
+
 }
 
