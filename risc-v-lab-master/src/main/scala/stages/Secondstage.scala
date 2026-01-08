@@ -1,7 +1,7 @@
 package processor
 import chisel3._
 import chisel3.util._
-/*
+
 
 class SecondStage extends Module {
 
@@ -31,7 +31,7 @@ class SecondStage extends Module {
     val IM_pointer_reg=RegInit(UInt(32.W))
     IM_pointer_reg:=io.IM_pointer
 
-    Instruction=Wire()
+    Instruction=Wire(UInt(32.W))
 
     val InstructionMemory=Module(new InstructionROM())
     InstructionMemory.io.address=IM_pointer_reg
@@ -67,4 +67,3 @@ class SecondStage extends Module {
     
 
 }
-*/

@@ -1,4 +1,4 @@
-/*package processor
+package processor
 
 import chisel3._
 import org.scalatest.flatspec.AnyFlatSpec
@@ -15,4 +15,4 @@ class SecondStageTest extends AnyFlatSpec with ChiselScalatestTester {
     }
   }
 }
-*/
+
