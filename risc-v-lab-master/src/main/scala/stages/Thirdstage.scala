@@ -5,11 +5,9 @@ import chisel3.util._
 
 
 
-class Thirdstage extends Module {
+class ThirdStage extends Module {
 
   val io = IO(new Bundle {
-    // Input: vector of enum values
-    //The input should be: colorMoving, from To, newBoard.
 
     val RF_input1=Input(UInt(5.W))//pretty sure that these dont need to be 32 bits. 
     val RF_input2=Input(UInt(5.W))

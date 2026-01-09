@@ -17,12 +17,8 @@ class FirstStage extends Module {
     val DataMemoryAddress=Input(UInt(32.W))
     val DataToWrite=Input(UInt(32.W))
 
+    val newPC=Output(Bool())
     val PC=Output(UInt(32.W))
-    val IM_Pointer=Output(UInt(32.W))//idk the bit width. 
-
-
-
-
 
   })
 

@@ -1,4 +1,5 @@
 
+
 package processor
 import chisel3._
 import chisel3.util._
@@ -8,12 +9,10 @@ class SecondStage extends Module {
 
   val io = IO(new Bundle {
 
+    val newPC=Input(UInt(32.W))
     val PCIn = Input(UInt(32.W))
     val PCOut=Output(UInt(32.W))
-    //we are sending PC through because we may use it
-
-    val IM_pointer=Input(UInt(32.W))
-    
+    //we are sending PC through because we may use it    
     val readData1=Output(UInt(5.W))
     val readData2=Output(UInt(5.W))
 
@@ -29,15 +28,14 @@ class SecondStage extends Module {
     PCIn_reg:=io.PCIn
     io.PCOut:=PCIn_reg
 
-    val IM_pointer_reg=RegInit(UInt(32.W))
-    IM_pointer_reg:=io.IM_pointer
+    val waitingForNewPC=RegInit(false.B)
+    val PC=RegInit(0.U)//I am assuming that PC always starts at zero. 
+    PC:=PC+1.U
 
-    Instruction=Wire(UInt(32.W))
+    val InstructionMemory=Module(new IM())
+    InstructionMemory.io.address:=PC
 
-    val InstructionMemory=Module(new InstructionROM())
-    InstructionMemory.io.address=IM_pointer_reg
-
-    val Instruction=InstructionMemory.data
+    val Instruction=InstructionMemory.io.data
 
     
     io.readData1:=Utils.rs1(Instruction)

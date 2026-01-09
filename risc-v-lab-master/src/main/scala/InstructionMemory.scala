@@ -2,22 +2,29 @@ package processor
 
 import chisel3._
 import chisel3.util._
+import lib.Executable
 
 
 
-class InstructionROM (instructions: Array[Byte]) extends Module {
+class IM () extends Module {
+
+    val exe = Executable.from("tests/ripes/add.out")
+
+    // \\wsl.localhost\Ubuntu-24.04\home\moeth\risvcourse\3\processor\risc-v-lab-master\tests\ripes\add.out
+    //val text = exe.getSection(".text")
+    val text = exe.getSegment(".text")
+    
+    print(text.getWords) // returns a Seq[Long] of instructions
+    print(text.start) // start address of the section
+    print(exe.getEntryPoint) // returns the start PC of the program
+    text.getWords.foreach(println)
+
     val io = IO(new Bundle{
         val address = Input(UInt(10.W))
         val data = Output(UInt(32.W))
     })
+    val instrVec = VecInit(text.getWords.map(w => w.U(32.W)))
 
-    val mem = VecInit(instructions.toIndexedSeq.map(_.S(8.W).asUInt))
-    val b0 = mem(io.address)
-    val b1 = mem(io.address + 1.U)
-    val b2 = mem(io.address + 2.U)
-    val b3 = mem(io.address + 3.U)
-
-    // Cat(MSB, ..., LSB)
-    io.data := Cat(b3, b2, b1, b0)
+    io.data:=instrVec(io.address)
 
 }
