@@ -5,6 +5,8 @@ import chisel3.util._
 class FullProcessor extends Module {
 
   val io = IO(new Bundle {
+    val regs=Output(Vec(32,UInt(32.W)))
+
     
     //There should probably be something here to write to registers as well. 
   })
@@ -13,6 +15,8 @@ class FullProcessor extends Module {
      val SecondStage=Module(new SecondStage)
      val ThirdStage=Module(new ThirdStage)
 
+
+    io.regs:=ThirdStage.io.regs
 
     //ALU is in FirstStage. 
     //ALU sends to both second and thirdstage. 
@@ -35,11 +39,12 @@ class FullProcessor extends Module {
     ThirdStage.io.RF_input2:=SecondStage.io.readData2
     ThirdStage.io.fullInstructionForALU:=SecondStage.io.instructionOut
     ThirdStage.io.IR:=SecondStage.io.IR
-
-
+    ThirdStage.io.RF_write:=FirstStage.io.RF_write
+    ThirdStage.io.RF_val:=FirstStage.io.RF_val
+    ThirdStage.io.RF_address:=FirstStage.io.RF_address
     /*
     FIRST STAGE: 
-        val ALU_input1 = Input(UInt(32.W))
+       val ALU_input1 = Input(UInt(32.W))
 
     val ALU_input2=Input(UInt(32.W))//idk if 32 or 64. Drawing says 64. 
     val fullInstruction=Input(UInt(32.W))
@@ -52,6 +57,10 @@ class FullProcessor extends Module {
 
     val newPC=Output(Bool())
     val PC=Output(UInt(32.W))
+
+    val RF_write=Output(Bool())
+    val RF_val=Output(UInt(32.W))
+    val RF_address=Output(UInt(32.W))
 
     SECOND STAGE: 
     val newPC=Input(UInt(32.W))
@@ -67,8 +76,12 @@ class FullProcessor extends Module {
     val IR=Output(UInt(32.W))
 
     THIRD STAGE: 
-    val RF_input1=Input(UInt(5.W))//pretty sure that these dont need to be 32 bits. 
+      val RF_input1=Input(UInt(5.W))
     val RF_input2=Input(UInt(5.W))
+
+    val RF_write=Input(Bool())
+    val RF_val=Input(UInt(32.W))
+    val RF_address=Input(UInt(32.W))
 
     val fullInstructionForALU=Input(UInt(32.W))
     val fullInstructionOut=Output(UInt(32.W))

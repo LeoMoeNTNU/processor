@@ -12,7 +12,7 @@ class SecondStage extends Module {
     val newPC=Input(UInt(32.W))
     val PCIn = Input(UInt(32.W))
     val PCOut=Output(UInt(32.W))
-    //we are sending PC through because we may use it    
+    //we are sending PC through because we may use it to calculate the next PC.    
     val readData1=Output(UInt(5.W))
     val readData2=Output(UInt(5.W))
 
@@ -24,8 +24,15 @@ class SecondStage extends Module {
 
   })
 
-    val PCIn_reg=RegInit(UInt(32.W))
+    
+
+
+    val newPC_reg=RegInit(0.U(32.W))
+    newPC_reg:=io.newPC
+
+    val PCIn_reg=RegInit(0.U(32.W))
     PCIn_reg:=io.PCIn
+
     io.PCOut:=PCIn_reg
 
     val waitingForNewPC=RegInit(false.B)
@@ -37,6 +44,9 @@ class SecondStage extends Module {
 
     val Instruction=InstructionMemory.io.data
 
+    io.instructionOut:=Instruction//This line will change with branches and maybe jumps too. 
+    
+    io.IR:=0.U//This line is necessary because there are so many uncovered opcodes. 
     
     io.readData1:=Utils.rs1(Instruction)
     io.readData2:=Utils.rs2(Instruction)
