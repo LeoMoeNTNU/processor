@@ -6,6 +6,9 @@ class FullProcessor extends Module {
 
   val io = IO(new Bundle {
     val regs=Output(Vec(32,UInt(32.W)))
+    val ALU_input1=Output(UInt(32.W))
+    val ALU_input2=Output(UInt(32.W))
+    
 
     
     //There should probably be something here to write to registers as well. 
@@ -17,6 +20,8 @@ class FullProcessor extends Module {
 
 
     io.regs:=ThirdStage.io.regs
+    io.ALU_input1:=ThirdStage.io.value1
+    io.ALU_input2:=ThirdStage.io.value2
 
     //ALU is in FirstStage. 
     //ALU sends to both second and thirdstage. 

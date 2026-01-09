@@ -72,6 +72,9 @@ class FirstStage extends Module {
         ALU.io.from1:=Utils.rs1(Instruction)
         ALU.io.from2:=Utils.rs2(Instruction)
         ALU.io.toReg:=Utils.rd(Instruction)
+        io.RF_write:=true.B
+        io.RF_address:=Utils.rd(Instruction)
+        io.RF_val:=ALU.io.output
 
 
       }
@@ -79,6 +82,9 @@ class FirstStage extends Module {
         ALU.io.from1:=Utils.rs1(Instruction)
         ALU.io.from2:=0.U
         ALU.io.toReg:=Utils.rd(Instruction)
+        io.RF_write:=true.B
+        io.RF_address:=Utils.rd(Instruction)
+        io.RF_val:=ALU.io.output
         
       }
       

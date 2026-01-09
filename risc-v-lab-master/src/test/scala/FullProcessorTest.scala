@@ -14,9 +14,12 @@ class FPTest extends AnyFlatSpec with ChiselScalatestTester {
 
 			for(i<-0 to 10){
                 println(s"AFTER ${i} CYCLES:")
-                for(j<-0 to 32){
+                for(j<-0 to 31){
                     println(s"reg ${j}: ${dut.io.regs(j).peek().litValue}")
                 }
+                println(s"values going into ALU: ${dut.io.ALU_input1.peek().litValue}, ${dut.io.ALU_input2.peek().litValue}")
+
+                dut.clock.step()
                
 
             }

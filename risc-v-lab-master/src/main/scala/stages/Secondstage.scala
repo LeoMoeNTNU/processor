@@ -9,7 +9,7 @@ class SecondStage extends Module {
 
   val io = IO(new Bundle {
 
-    val newPC=Input(UInt(32.W))
+    val newPC=Input(Bool())
     val PCIn = Input(UInt(32.W))
     val PCOut=Output(UInt(32.W))
     //we are sending PC through because we may use it to calculate the next PC.    
@@ -24,7 +24,7 @@ class SecondStage extends Module {
 
   })
 
-    
+
 
 
     val newPC_reg=RegInit(0.U(32.W))
@@ -33,11 +33,11 @@ class SecondStage extends Module {
     val PCIn_reg=RegInit(0.U(32.W))
     PCIn_reg:=io.PCIn
 
-    io.PCOut:=PCIn_reg
-
-    val waitingForNewPC=RegInit(false.B)
-    val PC=RegInit(0.U)//I am assuming that PC always starts at zero. 
+    val waitingForNewPC=RegInit(false.B)//if I change this, things will happen of course...
+    val PC=RegInit(0.U(32.W))//I am assuming that PC always starts at zero. 
+    
     PC:=PC+1.U
+    io.PCOut:=PC
 
     val InstructionMemory=Module(new IM())
     InstructionMemory.io.address:=PC
