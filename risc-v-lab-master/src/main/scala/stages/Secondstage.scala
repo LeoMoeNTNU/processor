@@ -55,18 +55,20 @@ class SecondStage extends Module {
       is("b0110011".U){//R-type
         io.IR:=0.U//R-type doesn't use IR.
       }
-      is("b0010011".U,"b0000011".U,"b1100111".U,"b1110011".U){
+      is("b0010011".U,"b0000011".U,"b1100111".U,"b1110011".U){//I-type
+        //printf("THIRD STAGE KNOWS OF I-TYPE INSTRUCTION!")
         io.IR:=Utils.I_imm(Instruction)
+        printf(p"SECOND STAGE KNOWS OF I-TYPE INSTRUCTION! IR = 0x${Hexadecimal(io.IR)} (${io.IR})\n")
       }
       
-      is("b0100011".U){
+      is("b0100011".U){//S-type
         io.IR:=Utils.S_imm(Instruction)
       }
-      is("b1100011".U){
+      is("b1100011".U){//B-type
         io.IR:=Utils.B_imm(Instruction)
       }
   
-      is("b1101111".U){
+      is("b1101111".U){//J-type
         io.IR:=Utils.J_imm(Instruction)
       }
       is("b0110111".U,"b0010111".U){//U-type

@@ -12,7 +12,7 @@ class FPTest extends AnyFlatSpec with ChiselScalatestTester {
   it should "do additions" in {
     test(new FullProcessor) { dut =>
 
-			for(i<-0 to 10){
+			for(i<-0 to 25){
                 println(s"AFTER ${i} CYCLES:")
                 for(j<-0 to 31){
                     println(s"reg ${j}: ${dut.io.regs(j).peek().litValue}")

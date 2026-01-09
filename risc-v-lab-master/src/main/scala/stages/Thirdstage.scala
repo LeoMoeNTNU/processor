@@ -75,7 +75,10 @@ class ThirdStage extends Module {
 
     val Instruction=Wire(UInt(32.W))
     Instruction:=fullInstructionForALU_reg
+
     switch(Utils.opcode(Instruction)){
+
+
       is("b0110011".U){//R-type
         io.dataMemoryActive:=false.B
         io.dataReadOrWrite:=false.B//false is for write. 
@@ -87,8 +90,8 @@ class ThirdStage extends Module {
       }
       is("b0010011".U,"b0000011".U,"b1100111".U,"b1110011".U){//I-type
         io.value1:=regs(RF_input1_reg)
-        
-        io.value2:=regs(IR_reg)
+        io.value2:=IR_reg
+        printf(p"we are in the third stage with a value2 that is now:0x${Hexadecimal(IR_reg)} (${IR_reg})\n")
         //This line won't always be correct. In a bunch of instructions, I will have to set some of the bits to zero. 
         //Check instruction sheet bro. 
 

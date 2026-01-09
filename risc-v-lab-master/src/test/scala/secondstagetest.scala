@@ -19,7 +19,7 @@ class secstatest extends AnyFlatSpec with ChiselScalatestTester {
       
       dut.io.newPC.poke(false.B)
       dut.io.PCIn.poke(0.U)
-      for(i<-0 to 10){
+      for(i<-0 to 30){
                 val full = dut.io.instructionOut.peek().litValue
                 val lower7     = full & 0x7F
                 val bits19_15  = (full >> 15) & 0x1F
@@ -30,6 +30,7 @@ class secstatest extends AnyFlatSpec with ChiselScalatestTester {
                 
                 println(s"first reg: ${dut.io.readData1.peek().litValue}")
                 println(s"second reg: ${dut.io.readData2.peek().litValue}")
+                println(s"constant being sent: ${dut.io.IR.peek().litValue}")
 
 
                 //readData1
