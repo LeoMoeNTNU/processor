@@ -59,6 +59,9 @@ class SecondStage extends Module {
         //printf("THIRD STAGE KNOWS OF I-TYPE INSTRUCTION!")
         io.IR:=Utils.I_imm(Instruction)
         printf(p"SECOND STAGE KNOWS OF I-TYPE INSTRUCTION! IR = 0x${Hexadecimal(io.IR)} (${io.IR})\n")
+
+        //There are a bunch of I-instructions that want to write to memory. Fix this at some point!
+
       }
       
       is("b0100011".U){//S-type
