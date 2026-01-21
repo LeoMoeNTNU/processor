@@ -7,9 +7,9 @@ import org.scalatest.flatspec.AnyFlatSpec
 import chiseltest._
 
 
-class bgetest extends AnyFlatSpec with ChiselScalatestTester {
+class addtest extends AnyFlatSpec with ChiselScalatestTester {
 
-  behavior of "bge.out"
+  behavior of "add.out"
 
    it should "check a0 and a7 after the whole thing has run " in {//tests\riscv-tests\bge.out
 

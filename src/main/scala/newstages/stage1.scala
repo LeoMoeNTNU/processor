@@ -110,7 +110,6 @@ class FirstStage extends Module {
     DM.io.value:=io.DM_val
   }
   //now I've set the inputs for this one!
-
   /*Inputs:
    val writeReg=Input(Bool())
     val toReg=Input(UInt(5.W))
@@ -124,7 +123,13 @@ class FirstStage extends Module {
   
   */
 
-  io.regWrite:=io.writeReg
+  /*UNNECESSARY I THINK!
+  when(io.toReg=/=0.U){
+    io.regWrite:=io.writeReg
+
+  }
+  */
+  io.regWrite:=Mux(io.toReg=/=0.U,io.writeReg,false.B)//adding this line so we don't write to 0 :)
   io.regToWrite:=io.toReg
   when(io.writeFrom){
     io.regWriteVal:=ALU.io.output
