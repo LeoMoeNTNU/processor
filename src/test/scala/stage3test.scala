@@ -50,7 +50,7 @@ class stage3Test extends AnyFlatSpec with ChiselScalatestTester {
   */
 
   it should "be able to write to a register" in {
-    test(new ThirdStage()) { dut =>
+    test(new ThirdStage(true)) { dut =>
       /*
       val regWrite=Input(Bool())
     val regToWrite=Input(UInt(5.W))
@@ -80,7 +80,7 @@ class stage3Test extends AnyFlatSpec with ChiselScalatestTester {
 }
 
 it should "throw out correct signals for a branch" in {
-    test(new ThirdStage()) { dut =>
+    test(new ThirdStage(true)) { dut =>
       /*
       val regWrite=Input(Bool())
     val regToWrite=Input(UInt(5.W))

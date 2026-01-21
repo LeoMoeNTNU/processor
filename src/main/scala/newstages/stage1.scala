@@ -16,6 +16,8 @@ It will have:
 
 class FirstStage extends Module {
 
+  printf("stage 1:\n")
+
   val io = IO(new Bundle {
 
     val useALU=Input(Bool())
@@ -55,7 +57,7 @@ class FirstStage extends Module {
 
   })
 
-
+  //if io.newPC= true
   val forwardedRegister=RegInit(0.U(5.W))
   val forwardedValue=RegInit(0.U(32.W))
 
@@ -173,6 +175,12 @@ class FirstStage extends Module {
       }
     }
   }
+
+  when(io.newPC){
+    printf(p"newPC triggered: forwarded_PC_1 = ${(forwarded_PC_1)}, PC_2 = ${(io.PC_2)} adding up to ${io.PC_val_out}\n")
+  }
+  //if io.newPC= true, print forwarded_PC_1 and PC_2 on binary form.
+
 
   //Here I will actually do the forwarding:
   when(io.writeReg&io.toReg=/=0.U){

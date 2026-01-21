@@ -26,6 +26,8 @@ class SecondStage(path:String) extends Module {
 
   })
 
+  printf("stage 2:\n")
+
     val waiting = RegInit(false.B)
     val PC=RegInit(0.U(32.W))
     val IM=Module(new IM(path))

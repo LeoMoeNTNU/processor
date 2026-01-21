@@ -10,25 +10,29 @@ Anything that writes to PC is a branch and needs to be paused right now.
 
 */
 
-class FP(path:String) extends Module {
+class FP(path:String, debug:Boolean) extends Module {
 
   val io = IO(new Bundle {
     //This will only have debug signals.
-    val regs=Output(Vec(32,UInt(32.W)))
+    val regs= if(debug)
+    Some(Output(Vec(32,UInt(32.W)))) else None
 
 
   })
     //stages:
     val FS=Module(new FirstStage)
     val SS=Module(new SecondStage(path))
-    val TS=Module(new ThirdStage)
+    val TS=Module(new ThirdStage(debug))
 
     //barriers:
     val FB=Module(new barrier1)
     val SB=Module(new barrier2)
     var TB=Module(new barrier3)
 
-    io.regs:=TS.io.regs
+    if(debug){
+      io.regs.get:=TS.io.regs.get
+
+    }
 
     //stage1 to barrier 2:
     SB.io.newPC_In:=FS.io.newPC_out

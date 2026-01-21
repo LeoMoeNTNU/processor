@@ -2,7 +2,7 @@ package processor
 import chisel3._
 import chisel3.util._
 
-class ThirdStage extends Module {
+class ThirdStage(debug:Boolean) extends Module {
 
 /*
 What this one will practically do, is receive an instruction and output a bunch of control signals.
@@ -51,13 +51,19 @@ It will also have all the registers, so that it can send those out as well.
     val PC_1_from=Output(UInt(5.W))
     val PC_2=Output(UInt(32.W))
 
-    val regs=Output(Vec(32,UInt(32.W)))//for testing!
+    val regs= if(debug)
+    Some(Output(Vec(32,UInt(32.W)))) else None //for testing!
 
   })
 
 
   val regs = RegInit(VecInit(Seq.fill(32)(0.U(32.W))))
-  io.regs:=regs
+  
+  if(debug){
+    io.regs.get:=regs
+
+  }
+  printf("stage 3:\n")
 
     //easier to write this way.
   val ins=WireDefault(io.instruction)

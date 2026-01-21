@@ -11,9 +11,44 @@ class FPTest extends AnyFlatSpec with ChiselScalatestTester {
 
   behavior of "DM"
 
-  it should "write and load a word and get it correct - very basic" in {
-    test(new FP("tests/ripes/add.out")) { dut =>
+  it should "this one doesnt test anything yet, sadly :(" in {
+    test(new FP("tests/ripes/add.out",true)) { dut =>
 
+      dut.clock.step()
+      dut.clock.step()
+      dut.clock.step()
+      dut.clock.step()
+      dut.clock.step()
+      dut.clock.step()
+      dut.clock.step()
+      dut.clock.step()
+      dut.clock.step()
+      dut.clock.step()
+      dut.clock.step()
+      dut.clock.step()
+      dut.clock.step()
+      dut.clock.step()
+    }
+  }
+
+
+   it should "verify that the jumps are reasonable and not overly big I may have to jump back with them!" in {
+    test(new FP("tests/riscv-tests/bge.out",true)) { dut =>
+
+      dut.clock.step()
+      dut.clock.step()
+      dut.clock.step()
+      dut.clock.step()
+      dut.clock.step()
+      dut.clock.step()
+      dut.clock.step()
+      dut.clock.step()
+      dut.clock.step()
+      dut.clock.step()
+      dut.clock.step()
+      dut.clock.step()
+      dut.clock.step()
+      dut.clock.step()
     }
   }
 }
