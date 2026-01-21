@@ -177,7 +177,7 @@ class FirstStage extends Module {
   }
 
   when(io.newPC){
-    printf(p"newPC triggered: forwarded_PC_1 = ${(forwarded_PC_1)}, PC_2 = ${(io.PC_2)} adding up to ${io.PC_val_out}\n")
+    printf(p"newPC triggered: forwarded_PC_1 = ${(forwarded_PC_1)}, PC_2 = ${(io.PC_2.asSInt)} adding up to ${io.PC_val_out(31,0)}\n")
   }
   //if io.newPC= true, print forwarded_PC_1 and PC_2 on binary form.
 

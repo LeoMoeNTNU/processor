@@ -16,6 +16,7 @@ class FP(path:String, debug:Boolean) extends Module {
     //This will only have debug signals.
     val regs= if(debug)
     Some(Output(Vec(32,UInt(32.W)))) else None
+    val done=Output(Bool())
 
 
   })
@@ -29,6 +30,7 @@ class FP(path:String, debug:Boolean) extends Module {
     val SB=Module(new barrier2)
     var TB=Module(new barrier3)
 
+    io.done:=SS.io.done
     if(debug){
       io.regs.get:=TS.io.regs.get
 

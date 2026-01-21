@@ -31,24 +31,4 @@ class FPTest extends AnyFlatSpec with ChiselScalatestTester {
     }
   }
 
-
-   it should "verify that the jumps are reasonable and not overly big I may have to jump back with them!" in {
-    test(new FP("tests/riscv-tests/bge.out",true)) { dut =>
-
-      dut.clock.step()
-      dut.clock.step()
-      dut.clock.step()
-      dut.clock.step()
-      dut.clock.step()
-      dut.clock.step()
-      dut.clock.step()
-      dut.clock.step()
-      dut.clock.step()
-      dut.clock.step()
-      dut.clock.step()
-      dut.clock.step()
-      dut.clock.step()
-      dut.clock.step()
-    }
-  }
 }

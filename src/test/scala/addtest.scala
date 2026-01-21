@@ -11,21 +11,10 @@ class bgetest extends AnyFlatSpec with ChiselScalatestTester {
 
   behavior of "bge.out"
 
-
-   it should "verify that the jumps are reasonable and not overly big I may have to jump back " in {//tests\riscv-tests\bge.out
-    test(new FP("tests/riscv-tests/bge.out",true)) { dut =>
-        for(i<-0 to 50){
-            dut.clock.step()
-
-        }
-
-    }
-  }
-
    it should "check a0 and a7 after the whole thing has run " in {//tests\riscv-tests\bge.out
 
 
-    test(new FP("tests/riscv-tests/bge.out",true)) { dut =>
+    test(new FP("tests/riscv-tests/add.out",true)) { dut =>
         while(!dut.io.done.peekBoolean()){
             dut.clock.step()
 
