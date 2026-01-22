@@ -6,3 +6,6 @@ When I take out that line, the rest of it runs very well and correctly (:-)
 sub also doesnt work just yet. 
 
 ### It seems like the reason that sub doesnt work is because lui doesn't
+
+
+### It could be that the jal and jalr don't work because the imm isn't bit-shifted 2 down!
