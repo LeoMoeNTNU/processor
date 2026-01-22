@@ -14,7 +14,7 @@ class ledTest extends AnyFlatSpec with ChiselScalatestTester {
   behavior of "ledtest"
 
   it should "im just using this to look at outputs" in {
-    test(new FP("led_stuff/led_for_simul.out",true)) { dut =>
+    test(new FP("led_stuff/my_led.out",true)) { dut =>
         for(i<-0 until 100){
       dut.clock.step()
 

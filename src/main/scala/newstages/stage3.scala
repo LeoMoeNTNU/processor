@@ -310,14 +310,17 @@ printf(p"we are decoding an instruction with opcode ${Binary(Utils.opcode(ins))}
         io.ALU1_from:=Utils.rs1(ins)
         io.ALU2_val:=regs(Utils.rs2(ins))
         io.ALU2_from:=Utils.rs2(ins)
-
+        printf(p"we found a BRANCH!!!\n")
+        printf(p"the operation we found is ${Utils.funct3(ins)}, where 10 is equal and 11 is unequal\n")
         io.ALU_op:=0.U
      
             switch(Utils.funct3(ins)){
                 is(0.U){//equal
+                  
                   io.ALU_op:=10.U
                 }
                 is(1.U){//unequal
+
                   io.ALU_op:=11.U
                 }
                 is(2.U){//something wrong, should print!
