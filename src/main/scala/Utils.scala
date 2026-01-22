@@ -13,7 +13,7 @@ object Utils {
   // 32-bit sign-extended immediates, U_imm = <<12
   def I_imm(x: UInt): UInt = Cat(Fill(20, x(31)), x(31,20))//I probably want to take away the Fill()
   def S_imm(x: UInt): UInt = Cat(Fill(20, x(31)), x(31,25), x(11,7))//I probably want to take away the Fill()
-  def B_imm(x: UInt): UInt = Cat(Fill(22,x(31)), x(7), x(30,25), x(11,9))
+  def B_imm(x: UInt): UInt = Cat(Fill(20,x(31)), x(7), x(30,25), x(11,8),0.U(1.W))
   //information about b_imm: it already takes fewer bits because it is 
   //I have modified B_imm to take 1 fewer bits so that the number becomes correct. 
   def U_imm(x: UInt): UInt = Cat(x(31,12), 0.U(12.W))

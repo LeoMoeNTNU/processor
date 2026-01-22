@@ -42,6 +42,21 @@ class stage2Test extends AnyFlatSpec with ChiselScalatestTester {
                     val opcode = inst & 0x7F   // lowest 7 bits
                     assert(opcode == BigInt("1100011", 2), "this should be a branch")
 
+
+
+                    val raw = dut.io.debug_b_imm.peek().litValue
+                    val signed = raw.toInt  // BigInt → Int with sign interpretation
+                    println(s"jump length = $signed")
+
+                    val rs1 = dut.io.debug_rs1.peek().litValue
+                    println(s"rs1  = $rs1")
+                    assert(rs1==30)
+
+                    val rs2 = dut.io.debug_rs2.peek().litValue
+                    println(s"rs2 = $rs2")
+                    assert(rs2==29)
+
+
                 }
                 if(i==6){
                     dut.io.debug_waiting.expect(true.B)

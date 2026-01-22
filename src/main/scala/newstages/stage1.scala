@@ -180,15 +180,17 @@ class FirstStage extends Module {
         }
     when(io.newPC_already_decided){
 
-      io.PC_val_out:=forwarded_PC_1+io.PC_2
+      io.PC_val_out:=forwarded_PC_1+((io.PC_2>>2.U).asUInt) // (io.val1.asSInt >>2.U).asUInt???
       //check forwarding!
+      //old version: forwarded_PC_1+io.PC_2
      
 
 
 
     }.otherwise{//Here we do the thing with the ALU.output(0)
       when(ALU.io.output(0)){
-        io.PC_val_out:=forwarded_PC_1+io.PC_2
+        io.PC_val_out:=forwarded_PC_1+((io.PC_2>>2.U).asUInt)
+         //old version: forwarded_PC_1+io.PC_2     
       }.otherwise{
         io.PC_val_out:=forwarded_PC_1+1.U
       }

@@ -21,8 +21,14 @@ class SecondStage(path:String) extends Module {
 
     val PC_out=Output(UInt(32.W))
 
-    val debug_waiting=Output(Bool())
     val done=Output(Bool())
+    val debug_waiting=Output(Bool())
+    val debug_b_imm=Output(UInt(32.W))
+
+    val debug_rs1=Output(UInt(5.W))
+    val debug_rs2=Output(UInt(5.W))
+
+
 
 
   })
@@ -38,6 +44,10 @@ class SecondStage(path:String) extends Module {
 
     io.debug_waiting:=waiting
     io.done:=(Utils.opcode(IM.io.data)==="b1110011".U)
+
+    io.debug_b_imm:=Utils.B_imm(IM.io.data)
+    io.debug_rs1:=Utils.rs1(IM.io.data)
+    io.debug_rs2:=Utils.rs2(IM.io.data)
 
     //TODO: Initialize instruction memory with a string for the address...
 

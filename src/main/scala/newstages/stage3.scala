@@ -282,8 +282,8 @@ printf(p"we are decoding an instruction with opcode ${Binary(Utils.opcode(ins))}
         io.ALU1_from:=0.U
         io.ALU2_val:=0.U
         io.ALU2_from:=0.U
-
-        //TODO: ALU.op. I haven't fixed this yet.
+        printf(p"executing a store word  of some form!\n")
+        io.ALU_op:=0.U //TODO: ALU.op. I haven't fixed this yet.
 
         io.writeReg:=false.B
         io.toReg:=0.U
@@ -311,7 +311,7 @@ printf(p"we are decoding an instruction with opcode ${Binary(Utils.opcode(ins))}
         io.ALU2_val:=regs(Utils.rs2(ins))
         io.ALU2_from:=Utils.rs2(ins)
         printf(p"we found a BRANCH!!!\n")
-        printf(p"the operation we found is ${Utils.funct3(ins)}, where 10 is equal and 11 is unequal\n")
+        printf(p"the operation we found is ${Utils.funct3(ins)}, where 0 is equal and 1 is unequal\n")
         io.ALU_op:=0.U
      
             switch(Utils.funct3(ins)){
@@ -365,7 +365,7 @@ printf(p"we are decoding an instruction with opcode ${Binary(Utils.opcode(ins))}
         io.useALU:=true.B
         io.ALU1_val:=io.PC
         io.ALU1_from:=0.U
-        io.ALU2_val:=4.U
+        io.ALU2_val:=1.U
         io.ALU2_from:=0.U
 
 
@@ -387,13 +387,13 @@ printf(p"we are decoding an instruction with opcode ${Binary(Utils.opcode(ins))}
         io.newPC_already_decided:=true.B
         io.PC_1:=io.PC
         io.PC_1_from:=0.U
-        io.PC_2:=Utils.J_imm(ins)
+        io.PC_2:=Utils.J_imm(ins)>>1.U
     }
      is("b1100111".U){//jalr
         io.useALU:=true.B
         io.ALU1_val:=io.PC
         io.ALU1_from:=0.U
-        io.ALU2_val:=4.U
+        io.ALU2_val:=1.U
         io.ALU2_from:=0.U
 
         //TODO: ALU.op. whatever add is. 
