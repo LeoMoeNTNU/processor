@@ -14,7 +14,7 @@ main:
     li x3, 0;
 	
 .loop:
-	addi x2, x2, 1;;
+	addi x2, x2, 1;
     beq x2, x1, write;
     beq x1, x1, loop;
 .write:
