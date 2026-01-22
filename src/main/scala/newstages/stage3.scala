@@ -100,9 +100,12 @@ io.PC_1 := 0.U
 io.PC_1_from := 0.U
 io.PC_2 := 0.U
 
-
+printf(p"we are decoding an instruction with opcode ${Binary(Utils.opcode(ins))}\n")
   switch(Utils.opcode(ins)){
     is("b0110011".U){//R-type. 
+
+       printf(p"we are doing an R-type instruction with from reg ${io.ALU1_from} and ${io.ALU2_from} going to ${io.toReg}\n")
+       printf(p"we will be doing ALU op: ${io.ALU_op} in a couple cycles! \n") 
         io.useALU:=true.B
         io.ALU1_val:=regs(Utils.rs1(ins))
         io.ALU1_from:=Utils.rs1(ins)
@@ -178,6 +181,8 @@ io.PC_2 := 0.U
         io.ALU1_from:=Utils.rs1(ins)
         io.ALU2_val:=Utils.I_imm(ins)
         io.ALU2_from:=0.U
+        
+
 
         switch(Utils.funct3(ins)){
           is(0.U){//ADD
@@ -208,17 +213,17 @@ io.PC_2 := 0.U
           }
           is(5.U){//right shift 2 versions
             //This one needs to be fixed NOW!
+            //needs to be done!
           
           }
           is(2.U){//slti
+
           
           }
           is(3.U){//sltiu
 
           }
         }
-
-        //TODO: ALU.op. I haven't fixed this yet.
 
         io.writeReg:=true.B
         io.toReg:=Utils.rd(ins)
@@ -236,6 +241,11 @@ io.PC_2 := 0.U
         io.PC_1:=0.U
         io.PC_1_from:=0.U
         io.PC_2:=0.U
+
+        printf(p"we are doing I operation with the value from register ${Hexadecimal(io.ALU1_from)} and the immediate: ${Hexadecimal(io.ALU2_val)}\n")
+        printf(p"funct3 is ${Utils.funct3(ins)}\n")
+        printf(p"the ALU operation will be ${io.ALU_op} \n")
+        printf(p"the above operations is going to register ${Utils.rd(ins)}\n")
 
     }
     is("b0000011".U){//I-type, loads :)
@@ -355,6 +365,7 @@ io.PC_2 := 0.U
         io.ALU2_val:=4.U
         io.ALU2_from:=0.U
 
+
         //TODO: ALU.op. whatever add is. 
 
         io.writeReg:=true.B
@@ -403,17 +414,22 @@ io.PC_2 := 0.U
         io.PC_2:=Utils.J_imm(ins)
     }
       is("b0110111".U){//lui
+
         io.useALU:=true.B
-        io.ALU1_val:=Utils.U_imm(ins)<<12.U//TODO: check that U_imm isnt already bitshifted
+        io.ALU1_val:=Utils.U_imm(ins)
         io.ALU1_from:=0.U
         io.ALU2_val:=0.U
         io.ALU2_from:=0.U
-
+        io.ALU_op:=0.U//ALU.op is add!
         //TODO: ALU.op. whatever add is. 
 
         io.writeReg:=true.B
         io.toReg:=Utils.rd(ins)
-        io.writeFrom:=true.B//false refers to using the data memory instead of the 
+        io.writeFrom:=true.B//false refers to using the data memory and true is ALU
+        
+        printf(p" the instruction is a lui with the immediate ${Hexadecimal(io.ALU1_val)}\n")
+        printf(p"The whole instruction is ${Hexadecimal(ins)}\n")
+        printf(p"we are writing to ${io.toReg}\n")
 
         io.useMemory:=false.B
         io.DM_val:=0.U

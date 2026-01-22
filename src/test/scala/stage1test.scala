@@ -158,6 +158,49 @@ it should "do forwarding correctly" in {
     }
 }
 
+it should "do the led correctly" in {
+    test(new FirstStage) { dut =>
+        dut.io.useALU.poke(false.B)
+        //I'm assuming the belows won't be used. 
+        dut.io.ALU1_val.poke("b001101".U)
+        dut.io.ALU1_from.poke(0.U)
+        dut.io.ALU2_val.poke("b110101".U)
+        dut.io.ALU2_from.poke(0.U)
+        dut.io.ALU_op.poke(2.U)//2 is XOR
+
+        dut.io.writeReg.poke(false.B)
+        dut.io.toReg.poke(17.U)
+        dut.io.writeFrom.poke(true.B)
+
+        //below are meant to be irrelevant...
+        dut.io.useMemory.poke(true.B)
+        dut.io.DM_val.poke(1.U)
+        dut.io.DM_val_from.poke(0.U)
+        dut.io.DM_address.poke(0.U)
+        dut.io.DM_address_from.poke(0.U)
+        dut.io.DM_imm.poke(0.U)
+        dut.io.DM_operation.poke(6.U)
+        
+        dut.io.newPC.poke(false.B)
+        dut.io.newPC_already_decided.poke(false.B)
+        dut.io.PC_1.poke(0.U)
+        dut.io.PC_1_from.poke(0.U)
+        dut.io.PC_2.poke(0.U)
+
+        dut.io.regWrite.expect(false.B)
+        dut.io.led_light_out.expect(false.B,"it should be false because it was initialized false and the clock hasnt flipped")
+
+        dut.clock.step()
+        dut.io.led_light_out.expect(true.B,"now it should be true because we wrote that value!")
+
+        dut.io.useMemory.poke(true.B)
+        dut.io.DM_val.poke(0.U)
+        dut.clock.step()
+
+        dut.io.led_light_out.expect(false.B, "it should have turned itself back off again by now!")
+    }
+}
+
 
 
 }

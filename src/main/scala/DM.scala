@@ -38,6 +38,7 @@ class DM extends Module {
 
 
 
+
     //val dataMem= RegInit(VecInit(Seq.fill(8192)(0.U(8.W))))
     val dataMem = Mem(2048, UInt(32.W))
 
@@ -45,6 +46,10 @@ class DM extends Module {
     io.output:=0.U
 
     when(io.active){
+
+        printf("memory is active!\n")
+        printf(p"the operation is ${io.operation}, the memory address is ${io.address}\n")
+        printf(p"the imm is ${io.imm_bits}, the signed address is ${addressInHardwareSigned}\n")
         switch(io.operation){
             is(0.U){
                io.output:=Cat(

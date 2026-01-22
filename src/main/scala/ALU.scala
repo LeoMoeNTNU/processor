@@ -49,6 +49,8 @@ class ALU extends Module {
       output_inside:=io.val1>>io.val2(4,0)
     }
     is(7.U){//TODO: meant to be sra but is probably wrong
+    output_inside:=(io.val1.asSInt >> io.val2(4,0)).asUInt
+
       output_inside:=Cat(io.val1(31),(io.val1>>io.val2(4,0)))//I hope this works but what do I actually know. 
     }
     is(8.U){//slt
@@ -124,7 +126,7 @@ class ALU extends Module {
   }
 
 
-  printf(p"we are doing ALU operation ${io.operation} and outputting ${output_inside}\n")
+  printf(p"we are doing ALU operation ${io.operation}  with values${Hexadecimal(io.val1)} and ${Hexadecimal(io.val2)}and outputting ${Hexadecimal(output_inside)}\n")
 
   io.output:=output_inside
   //The two below are for forwarding!

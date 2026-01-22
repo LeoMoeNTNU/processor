@@ -16,7 +16,11 @@ object Utils {
   def B_imm(x: UInt): UInt = Cat(Fill(22,x(31)), x(7), x(30,25), x(11,9))
   //information about b_imm: it already takes fewer bits because it is 
   //I have modified B_imm to take 1 fewer bits so that the number becomes correct. 
-  def U_imm(x: UInt): UInt = Cat(x(31,24), 0.S(12.W))
-  def J_imm(x: UInt): UInt = Cat(0.U(11.W), x(31), x(19,12), x(20), x(30,21), 0.U(1.W))
+  def U_imm(x: UInt): UInt = Cat(x(31,12), 0.U(12.W))
+
+  //def J_imm(x: UInt): UInt = Cat(0.U(11.W), x(31), x(19,12), x(20), x(30,21), 0.U(1.W))//TODO: sign extend this one!
+  def J_imm(x: UInt): UInt = Cat(Fill(12,x(31)), x(19,12), x(20), x(30,25),x(24,21), 0.U(1.W))
+
+
 }
 

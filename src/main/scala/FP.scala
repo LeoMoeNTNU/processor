@@ -18,6 +18,8 @@ class FP(path:String, debug:Boolean) extends Module {
     Some(Output(Vec(32,UInt(32.W)))) else None
     val done=Output(Bool())
 
+    val led_out=Output(Bool())
+
 
   })
     //stages:
@@ -35,6 +37,9 @@ class FP(path:String, debug:Boolean) extends Module {
       io.regs.get:=TS.io.regs.get
 
     }
+
+    //for led out:
+    io.led_out:=FS.io.led_light_out
 
     //stage1 to barrier 2:
     SB.io.newPC_In:=FS.io.newPC_out

@@ -53,6 +53,9 @@ class FirstStage extends Module {
     val regWrite=Output(Bool())
     val regToWrite=Output(UInt(5.W))
     val regWriteVal=Output(UInt(32.W))
+
+    //output to FP:
+    val led_light_out=Output(Bool())
  
 
   })
@@ -62,7 +65,7 @@ class FirstStage extends Module {
   val forwardedValue=RegInit(0.U(32.W))
 
 
-
+  
   val ALU=Module(new ALU)
   val DM=Module(new DM)
   //val PC_C= Module(new PC_C)
@@ -109,6 +112,17 @@ class FirstStage extends Module {
   }.otherwise{
     DM.io.value:=io.DM_val
   }
+ 
+  //this code block is for controling the led light.
+  val led_light=RegInit(false.B)
+  when(DM.io.active===true.B
+      &DM.io.address===0.U
+      &DM.io.operation>=5.U){
+    printf(p"light is being changed to ${DM.io.value(0)}!!!!!!!!!!!!\n")
+    led_light:=DM.io.value(0)
+  }
+  io.led_light_out:=led_light
+
   //now I've set the inputs for this one!
   /*Inputs:
    val writeReg=Input(Bool())
